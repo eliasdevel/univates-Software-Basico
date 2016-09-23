@@ -21,24 +21,22 @@ int is_valid_option(char option, int type_validation){
 	if(type_validation == 3){
 		possible_inputs = "snSN";
 	}
+	// for validation of cadastro function
+	if(type_validation == 4){
+		possible_inputs = "123";
+	}
 
+	int ret =0;
 	int i =0;
-
 	while(i<strlen(possible_inputs)){
 		if(option == possible_inputs[i]){
-			return 1;
+			ret = 1;
 		}
-
 		i++;
 	}
 	possible_inputs = NULL;
-
-	return 0;
+	return ret;
 }
-
-
-
-
 void print_invalid_option(char option){
 	printf(ANSI_COLOR_RED "%c é uma opção inválida!!! " ANSI_COLOR_RESET "\n",option);
 }
@@ -57,12 +55,12 @@ int print_sucess(int id){
 int print_exit(){
 	printf( ANSI_COLOR_GREEN "Bye\n" ANSI_COLOR_RESET  );
 }
-
 void print_menu(){
-
 	printf("Sistema de controle imobiliário:\n  [1] Listar imóveis\n  [2] Cadastrar imóvel\n  [3] Editar imóvel\n  [4] Buscar imóvel\n  [x] Sair do programa\nDigite uma das opções:\n" );
 }
-
+void print_menu_buscar(){
+	printf("	[1] Buscar por tipo\n	[2] Buscar por cidade\n	[3] Buscar por número de quartos\n	Digite uma das opções:");
+}
 
 struct imovel {
     int   id;
@@ -83,9 +81,13 @@ void print_tipo_cadastro(){
 }
 
 
-void cadastro(){
+
+void cadastro(int editId){
 	struct imovel im;
 	im.id = id;
+	if (editId){
+		im.id = editId;
+	}
 	printf("Cadastrar imóveis:\n");
 
 	print_tipo_cadastro();
@@ -150,27 +152,76 @@ void cadastro(){
 	getchar();
 	main();
 }
-void list() {
+
+void edit(){
+	int editId;
+	printf("Editar imóvel:" );
+	while(!scanf("%d", &editId)){
+		print_invalid_int();
+		printf("Editar imóvel:" );
+		getchar();
+	}
+	getchar();
+	cadastro(editId);
+}
+
+void list(char query[]) {
 	int i = 1;
 	while (i<1000) {
 		if(imoveis[i].id){
 			printf("----\n");
 			printf("ID: %d\n",imoveis[i].id);
 			printf("Tipo: %s\n", imoveis[i].tipo[0] == '1' ? "Casa":"Apartamento");
-			printf("Descricao: %s\n",imoveis[i].descricao);
+			printf("Descricao: %s",imoveis[i].descricao);
 			printf("Quartos: %d\n",imoveis[i].quartos);
-			printf("Área: %fm²\n",imoveis[i].area);
-			printf("Cidade: %s\n",imoveis[i].cidade);
-			printf("Rua: %s\n",imoveis[i].rua);
+			printf("Área: %.2fm²\n",imoveis[i].area);
+			printf("Cidade: %s",imoveis[i].cidade);
+			printf("Rua: %s",imoveis[i].rua);
 			printf("Numero: %d\n",imoveis[i].numero);
 			printf("----\n");
 		}
-
 		i++;
 	}
 	getchar();
 	main();
 }
+
+void buscar(){
+	print_menu_buscar();
+	char option[2];
+	fgets(option,2,stdin);
+
+	while(!is_valid_option(option[0],4)){
+		getchar();
+		print_invalid_option(option[0]);
+		print_menu_buscar();
+		fgets(option,2,stdin);
+	}
+	char query[15];
+
+
+	switch(option[0]){
+		case '1':
+		printf("Busca por casa (1) ou apartamento (2):\n");
+		fgets(query,2,stdin);
+		while(!is_valid_option(query[0],2)){
+			print_invalid_option(qyery[0]);
+			printf("Busca por casa (1) ou apartamento (2):\n");
+			fgets(query,2,stdin);
+			getchar();
+		}
+
+			list(query);
+		case '2':
+			list("  ");
+			break;
+		case '3':
+			break;
+	}
+
+}
+
+
 
 int main(){
 
@@ -188,11 +239,19 @@ int main(){
 	}
 	switch(option[0]){
 		case '1':
-			list();
+			list("");
 			break;
 		case '2':
 			getchar();
-			cadastro();
+			cadastro(0);
+			break;
+		case '3':
+			edit();
+			getchar();
+			break;
+		case '4':
+			buscar();
+			getchar();
 			break;
 		case 'x':
 			print_exit();
