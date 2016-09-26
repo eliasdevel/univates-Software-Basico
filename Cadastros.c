@@ -1,11 +1,40 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define clear() printf("\033[H\033[J")
+
+int compareStrings(char str1[],char str2[]){
+	if(strlen(str1) != strlen(str2)){
+
+		return 0;
+	}
+	int i;
+
+	for ( i = 0; i < strlen(str1); i++) {
+		if(str1[i] != str2[i]){
+			return 0;
+		}
+		// else{
+		// 	printf("%c\n", str1[i]);
+		// }
+	}
+
+	return 1;
+}
+void removeEnter(char teste[]) {
+	int leng = strlen(teste);
+	int i;
+	for ( i = 0; i < leng; i++) {
+		if(teste[i] == '\n' || teste[i] == '\r'){
+			teste[i] = '\0';
+		}
+	}
+}
 
 int is_valid_option(char option, int type_validation){
 	char* possible_inputs;
@@ -165,29 +194,59 @@ void edit(){
 	cadastro(editId);
 }
 
-void list(char query[]) {
+
+
+void list(char query[],int type) {
+
 	int i = 1;
+	int wilList = 1;
+	removeEnter(query);
 	while (i<1000) {
-		if(imoveis[i].id){
+
+		removeEnter(imoveis[i].cidade);
+		removeEnter(imoveis[i].rua);
+		removeEnter(imoveis[i].descricao);
+
+		if(type == 1 && imoveis[i].tipo[0] != query[0] ){
+			wilList = 0;
+		}
+		if(type == 2 && !compareStrings( imoveis[i].cidade , query) ){
+
+			wilList = 0;
+		}
+
+		if(type == 3 && imoveis[i].quartos != atoi(query) ){
+			wilList = 0;
+		}
+
+		if(imoveis[i].id && wilList  ){
+
 			printf("----\n");
 			printf("ID: %d\n",imoveis[i].id);
 			printf("Tipo: %s\n", imoveis[i].tipo[0] == '1' ? "Casa":"Apartamento");
-			printf("Descricao: %s",imoveis[i].descricao);
+			printf("Descricao: %s\n",imoveis[i].descricao);
 			printf("Quartos: %d\n",imoveis[i].quartos);
 			printf("Área: %.2fm²\n",imoveis[i].area);
-			printf("Cidade: %s",imoveis[i].cidade);
-			printf("Rua: %s",imoveis[i].rua);
+			printf("Cidade: %s\n",imoveis[i].cidade);
+			printf("Rua: %s\n",imoveis[i].rua);
 			printf("Numero: %d\n",imoveis[i].numero);
 			printf("----\n");
+
 		}
+		wilList = 1;
 		i++;
+
 	}
+
 	getchar();
+
+	query = NULL;
 	main();
 }
 
 void buscar(){
 	print_menu_buscar();
+	getchar();
 	char option[2];
 	fgets(option,2,stdin);
 
@@ -197,25 +256,40 @@ void buscar(){
 		print_menu_buscar();
 		fgets(option,2,stdin);
 	}
-	char query[15];
+	char query[255];
+	char option_2[2];
 
 
 	switch(option[0]){
 		case '1':
 		printf("Busca por casa (1) ou apartamento (2):\n");
-		fgets(query,2,stdin);
-		while(!is_valid_option(query[0],2)){
-			print_invalid_option(qyery[0]);
+		getchar();
+		fgets(option_2,2,stdin);
+		while(!is_valid_option(option_2[0],2)){
+			print_invalid_option(option_2[0]);
 			printf("Busca por casa (1) ou apartamento (2):\n");
-			fgets(query,2,stdin);
+			fgets(option_2,2,stdin);
 			getchar();
 		}
 
-			list(query);
+			list(option_2,1);
 		case '2':
-			list("  ");
+			printf("	Buscar por Cidade:\n");
+			getchar();
+			fgets(query,255,stdin);
+
+			while(getchar() != '\n' ){}
+
+			list(query,2);
 			break;
 		case '3':
+			printf("Busca por numero de quartos:\n");
+
+			getchar();
+			fgets(query,11,stdin);
+
+			while(getchar() != '\n'){}
+			list(query,3);
 			break;
 	}
 
@@ -239,7 +313,8 @@ int main(){
 	}
 	switch(option[0]){
 		case '1':
-			list("");
+			list("",0);
+
 			break;
 		case '2':
 			getchar();
@@ -254,9 +329,11 @@ int main(){
 			getchar();
 			break;
 		case 'x':
+
 			print_exit();
 			break;
 		case 'X':
+		getchar();
 			print_exit();
 			break;
 	}
