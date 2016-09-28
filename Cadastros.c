@@ -187,7 +187,7 @@ void cadastro(int editId){
 		clear();
 		imoveis[im.id] = im;
 		printSucess(im.id);
-		id++;
+		if(!editId) id++;
 	}
 	getchar();
 	main();
