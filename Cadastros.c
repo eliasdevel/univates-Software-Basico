@@ -1,3 +1,7 @@
+/*
+Git Hub :https://github.com/eliasdevel/univates-Software-Basico
+*/
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -15,9 +19,7 @@
 int main();
 
 #endif
-/*
-Git Hub :https://github.com/eliasdevel/univates-Software-Basico
-*/
+
 int compareStrings(char str1[],char str2[]){
 	int ret =1;
 	if(strlen(str1) != strlen(str2)){
