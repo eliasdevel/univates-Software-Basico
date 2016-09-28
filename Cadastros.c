@@ -2,13 +2,19 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include "main.h"
+
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define clear() printf("\033[H\033[J")
 
+#ifndef MAIN_H
+#define MAIN_H
+
+int main();
+
+#endif
 /*
 Git Hub :https://github.com/eliasdevel/univates-Software-Basico
 */
