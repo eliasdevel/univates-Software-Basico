@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include "main.h"
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -12,19 +13,20 @@
 Git Hub :https://github.com/eliasdevel/univates-Software-Basico
 */
 int compareStrings(char str1[],char str2[]){
+	int ret =1;
 	if(strlen(str1) != strlen(str2)){
 
-		return 0;
+		ret = 0;
 	}
 	int i;
-
-	for ( i = 0; i < strlen(str1); i++) {
+	int len = strlen(str1);
+	for ( i = 0; i < len; i++) {
 		if(str1[i] != str2[i]){
-			return 0;
+			ret = 0;
 		}
 	}
 
-	return 1;
+	return ret;
 }
 void removeEnter(char teste[]) {
 	int leng = strlen(teste);
@@ -57,7 +59,8 @@ int isValidOption(char option, int type_validation){
 
 	int ret =0;
 	int i =0;
-	while(i<strlen(possible_inputs)){
+	int len = strlen(possible_inputs);
+	while(i < len){
 		if(option == possible_inputs[i]){
 			ret = 1;
 		}
@@ -69,19 +72,19 @@ int isValidOption(char option, int type_validation){
 void printInvalidOption(char option){
 	printf(ANSI_COLOR_RED "%c é uma opção inválida!!! " ANSI_COLOR_RESET "\n",option);
 }
-int printInvalidInt(){
+void printInvalidInt(){
 	printf(ANSI_COLOR_RED " Deve ser um numero inteiro!!! " ANSI_COLOR_RESET "\n");
 }
-int printInvalidFloat(){
+void printInvalidFloat(){
 	printf(ANSI_COLOR_RED " Deve ser um numero valido!!! " ANSI_COLOR_RESET "\n");
 }
-int printInvalidYesNo(){
+void printInvalidYesNo(){
 	printf(ANSI_COLOR_RED " A opção deve ser s ou n!!! " ANSI_COLOR_RESET "\n");
 }
-int printSucess(int id){
+void printSucess(int id){
 	printf(ANSI_COLOR_GREEN " Registro (ID = %d) cadastrado com sucesso! " ANSI_COLOR_RESET "\n",id);
 }
-int printExit(){
+void printExit(){
 	printf( ANSI_COLOR_GREEN "Bye\n" ANSI_COLOR_RESET  );
 }
 void printMenu(){
@@ -331,12 +334,12 @@ int main(){
 		case 'x':
 			getchar();
 			printExit();
-			exit;
+		
 			break;
 		case 'X':
 		    getchar();
 			printExit();
-			exit;
+		
 			break;
 	}
 
