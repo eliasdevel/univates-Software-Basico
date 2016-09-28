@@ -74,7 +74,7 @@ int isValidOption(char option, int type_validation){
 		}
 		i++;
 	}
-	free(possible_inputs);
+	possible_inputs = NULL;
 	return ret;
 }
 void printInvalidOption(char option){
