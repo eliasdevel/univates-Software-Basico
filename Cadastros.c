@@ -8,6 +8,9 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define clear() printf("\033[H\033[J")
 
+/*
+Git Hub :https://github.com/eliasdevel/univates-Software-Basico
+*/
 int compareStrings(char str1[],char str2[]){
 	if(strlen(str1) != strlen(str2)){
 
@@ -19,9 +22,6 @@ int compareStrings(char str1[],char str2[]){
 		if(str1[i] != str2[i]){
 			return 0;
 		}
-		// else{
-		// 	printf("%c\n", str1[i]);
-		// }
 	}
 
 	return 1;
@@ -36,7 +36,7 @@ void removeEnter(char teste[]) {
 	}
 }
 
-int is_valid_option(char option, int type_validation){
+int isValidOption(char option, int type_validation){
 	char* possible_inputs;
 	// for validation of main menu function
 	if(type_validation == 1){
@@ -66,28 +66,28 @@ int is_valid_option(char option, int type_validation){
 	possible_inputs = NULL;
 	return ret;
 }
-void print_invalid_option(char option){
+void printInvalidOption(char option){
 	printf(ANSI_COLOR_RED "%c é uma opção inválida!!! " ANSI_COLOR_RESET "\n",option);
 }
-int print_invalid_int(){
+int printInvalidInt(){
 	printf(ANSI_COLOR_RED " Deve ser um numero inteiro!!! " ANSI_COLOR_RESET "\n");
 }
-int print_invalid_float(){
+int printInvalidFloat(){
 	printf(ANSI_COLOR_RED " Deve ser um numero valido!!! " ANSI_COLOR_RESET "\n");
 }
-int print_invalid_yes_no(){
+int printInvalidYesNo(){
 	printf(ANSI_COLOR_RED " A opção deve ser s ou n!!! " ANSI_COLOR_RESET "\n");
 }
-int print_sucess(int id){
+int printSucess(int id){
 	printf(ANSI_COLOR_GREEN " Registro (ID = %d) cadastrado com sucesso! " ANSI_COLOR_RESET "\n",id);
 }
-int print_exit(){
+int printExit(){
 	printf( ANSI_COLOR_GREEN "Bye\n" ANSI_COLOR_RESET  );
 }
-void print_menu(){
+void printMenu(){
 	printf("Sistema de controle imobiliário:\n  [1] Listar imóveis\n  [2] Cadastrar imóvel\n  [3] Editar imóvel\n  [4] Buscar imóvel\n  [x] Sair do programa\nDigite uma das opções:\n" );
 }
-void print_menu_buscar(){
+void printMenuBuscar(){
 	printf("	[1] Buscar por tipo\n	[2] Buscar por cidade\n	[3] Buscar por número de quartos\n	Digite uma das opções:");
 }
 
@@ -105,7 +105,7 @@ struct imovel {
 struct imovel imoveis[1000];
 int id = 1;
 
-void print_tipo_cadastro(){
+void printTipoCadastro(){
 	printf("Tipo (1 - casa; 2 - apartamento):");
 }
 
@@ -119,12 +119,12 @@ void cadastro(int editId){
 	}
 	printf("Cadastrar imóveis:\n");
 
-	print_tipo_cadastro();
+	printTipoCadastro();
 	fgets(im.tipo,255,stdin);
 
-	while(!is_valid_option(im.tipo[0],2)){
-		print_invalid_option(im.tipo[0]);
-		print_tipo_cadastro();
+	while(!isValidOption(im.tipo[0],2)){
+		printInvalidOption(im.tipo[0]);
+		printTipoCadastro();
 		fgets(im.tipo,255,stdin);
 		getchar();
 	}
@@ -135,14 +135,14 @@ void cadastro(int editId){
 
 	printf("Quartos:" );
 	while(!scanf("%d", &im.quartos)){
-		print_invalid_int();
+		printInvalidInt();
 		printf("Quartos:" );
 		getchar();
 	}
 
 	printf("Área (m²):" );
 	while(!scanf("%f", &im.area)){
-		print_invalid_float();
+		printInvalidFloat();
 		printf("Área (m²):" );
 		getchar();
 	}
@@ -155,7 +155,7 @@ void cadastro(int editId){
 
 	printf("Número:" );
 	while(!scanf("%d", &im.numero)){
-		print_invalid_int();
+		printInvalidInt();
 		printf("Número:" );
 		getchar();
 	}
@@ -166,16 +166,16 @@ void cadastro(int editId){
 	fgets(option,2,stdin);
 
 	//verify if the input is right
-	while(!is_valid_option(option[0],3)){
+	while(!isValidOption(option[0],3)){
 		getchar();
-		print_invalid_yes_no();
+		printInvalidYesNo();
 		fgets(option,2,stdin);
 	}
 
 	if(option[0]=='s'){
 		clear();
 		imoveis[im.id] = im;
-		print_sucess(im.id);
+		printSucess(im.id);
 		id++;
 	}
 	getchar();
@@ -186,7 +186,7 @@ void edit(){
 	int editId;
 	printf("Editar imóvel:" );
 	while(!scanf("%d", &editId)){
-		print_invalid_int();
+		printInvalidInt();
 		printf("Editar imóvel:" );
 		getchar();
 	}
@@ -245,15 +245,15 @@ void list(char query[],int type) {
 }
 
 void buscar(){
-	print_menu_buscar();
+	printMenuBuscar();
 	getchar();
 	char option[2];
 	fgets(option,2,stdin);
 
-	while(!is_valid_option(option[0],4)){
+	while(!isValidOption(option[0],4)){
 		getchar();
-		print_invalid_option(option[0]);
-		print_menu_buscar();
+		printInvalidOption(option[0]);
+		printMenuBuscar();
 		fgets(option,2,stdin);
 	}
 	char query[255];
@@ -265,8 +265,8 @@ void buscar(){
 		printf("Busca por casa (1) ou apartamento (2):\n");
 		getchar();
 		fgets(option_2,2,stdin);
-		while(!is_valid_option(option_2[0],2)){
-			print_invalid_option(option_2[0]);
+		while(!isValidOption(option_2[0],2)){
+			printInvalidOption(option_2[0]);
 			printf("Busca por casa (1) ou apartamento (2):\n");
 			fgets(option_2,2,stdin);
 			getchar();
@@ -299,15 +299,15 @@ void buscar(){
 
 int main(){
 
-	print_menu();
+	printMenu();
 	char option[2];
 	fgets(option,2,stdin);
 
 	//verify if the input is right
-	while(!is_valid_option(option[0],1)){
+	while(!isValidOption(option[0],1)){
 		getchar();
-		print_invalid_option(option[0]);
-		print_menu();
+		printInvalidOption(option[0]);
+		printMenu();
 		fgets(option,2,stdin);
 
 	}
@@ -329,12 +329,14 @@ int main(){
 			getchar();
 			break;
 		case 'x':
-
-			print_exit();
+			getchar();
+			printExit();
+			exit;
 			break;
 		case 'X':
-		getchar();
-			print_exit();
+		    getchar();
+			printExit();
+			exit;
 			break;
 	}
 
